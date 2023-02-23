@@ -37,20 +37,20 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      # - checkout
-      # - cd frontend
-      # - npm install
-      # - npm run build
+      - checkout   
       - restore_cache:
-          keys: [frontend-build]
+          keys: 
+            - frontend-deps-{{ checksum "frontend/package-lock.json" }}
       - run:
           name: Build front-end
           command: |
-            # Your code here
-            exit 1
+            cd frontend
+            ls -al
+            npm install
+            npm run build
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-build
+          key: frontend-deps-{{ checksum "frontend/package-lock.json" }}
 
   # build-backend:
   #   docker:
