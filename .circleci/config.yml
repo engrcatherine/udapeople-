@@ -80,7 +80,7 @@ jobs:
           keys: 
             - frontend-deps-{{ checksum "frontend/package-lock.json" }}
       - run:
-          name: Build front-end
+          name: Run test-frontend
           command: |
             cd frontend
             ls -la
@@ -96,7 +96,7 @@ jobs:
           keys: 
             - backend-deps-{{ checksum "backend/package-lock.json" }}
       - run:
-          name: Build backend
+          name: Run test-backend
           command: |
             cd backend
             ls -la
