@@ -45,7 +45,7 @@ jobs:
           name: Build front-end
           command: |
             cd frontend
-            ls -al
+            ls -la
             npm install
             npm run build
       - save_cache:
@@ -58,12 +58,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: 
+            - backend-deps-{{ checksum "backend/package-lock.json" }}
       - run:
-          name: Back-end build
+          name: Build backend
           command: |
-             # Your code here
-             exit 1
+            cd backend
+            ls -la
+            npm install
+            npm run build
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
