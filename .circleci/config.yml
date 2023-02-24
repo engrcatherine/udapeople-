@@ -116,7 +116,10 @@ jobs:
           name: scan-frontend pkg
           command: |
             cd frontend
-            npm audit --audit-level=critical          
+            npm install            
+            npm audit fix --force --audit-level=critical
+            npm audit fix --force --audit-level=critical
+            npm audit --audit-level=critical         
              
 
   scan-backend:
@@ -130,9 +133,11 @@ jobs:
       - run:
           name: scan-backend pkg
           command: |
-            cd backend
-            npm audit --audit-level=critical           
-            
+            cd backend        
+            npm install            
+            npm audit fix --force --audit-level=critical
+            npm audit fix --force --audit-level=critical
+            npm audit --audit-level=critical
 
 
 
