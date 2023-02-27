@@ -218,7 +218,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      # - destroy-environment
+      - destroy-environment
 
 
 #infrastructure configuration
@@ -535,8 +535,8 @@ workflows:
           filters:
             branches:
               only: [main]            
-# #       - configure-infrastructure:
-# #           requires: [deploy-infrastructure]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
 # #       - run-migrations:
 # #           requires: [configure-infrastructure]
 # #       - deploy-frontend:
