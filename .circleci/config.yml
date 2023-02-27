@@ -185,7 +185,7 @@ jobs:
 #Create s3 buckets for frontend, Ec2 for backend and list ip address
   deploy-infrastructure:
     docker:
-      - image: cimg/python:3.10   #image used
+      - image: cimg/python:3.10   #Executor
     steps:
       - checkout
       - install_awscli
