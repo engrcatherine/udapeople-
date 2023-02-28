@@ -531,16 +531,16 @@ workflows:
       - scan-frontend:
           requires: [build-frontend]
       - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]  #add env in circleci #ansible/files/be/fe
           filters:
             branches:
               only: [main]            
       - configure-infrastructure:
-          requires: [deploy-infrastructure]
+          requires: [deploy-infrastructure]      #ansible/roles/cofig-server/main.yml
       - run-migrations:
           requires: [configure-infrastructure]
-# #       - deploy-frontend:
-# #           requires: [run-migrations]
+      - deploy-frontend:
+          requires: [run-migrations]
 # #       - deploy-backend:
 # #           requires: [run-migrations]
 # #       - smoke-test:
