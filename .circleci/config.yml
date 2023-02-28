@@ -417,7 +417,7 @@ jobs:
           command: |
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
-            --stack-name InitialStack \
+            --stack-name udapeeplefirst \
             --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"
             echo Current Workflow ID: "${CIRCLE_WORKFLOW_ID:0:7}"  
       - destroy-environment
@@ -545,5 +545,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-# #       - cleanup:
-# #           requires: [cloudfront-update]
+      - cleanup:
+          requires: [cloudfront-update]
