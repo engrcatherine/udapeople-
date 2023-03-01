@@ -460,7 +460,6 @@ jobs:
       - install_awscli
       - add_ssh_keys:
           fingerprints: ["18:eb:a3:69:ee:58:5b:83:08:c8:77:b2:9d:ad:f3:25"]
-      
       - attach_workspace:
           at: ~/
       - run:
@@ -547,3 +546,7 @@ workflows:
           requires: [smoke-test]
       - cleanup:
           requires: [cloudfront-update]
+      - configure-node-exporter:
+          requires: [smoke-test]
+      # - deploy-prometheus-server:
+      #     requires: [configure-node-exporter]
