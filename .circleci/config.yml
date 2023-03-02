@@ -490,8 +490,8 @@ workflows:
               only: [main]            
       - configure-infrastructure:
           requires: [deploy-infrastructure]      #ansible/roles/cofig-server/main.yml
-      # - run-migrations:
-      #     requires: [configure-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
       # - deploy-frontend:
       #     requires: [run-migrations]
       # - deploy-backend:
