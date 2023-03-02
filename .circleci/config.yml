@@ -56,24 +56,24 @@ commands:
             aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
 
 #this will revert migerations last migration
-  revert-migrations:
-    description: Revert the last migration, if any were executed during the current workflow
-    parameters:
-      Workflow_id:
-        type: string
-        default: ${CIRCLE_WORKFLOW_ID:0:7}
-    steps:
-      - run:
-          name: Revert migrations
-          when: on_fail
-          command: |
-            SUCCESS=$(curl --insecure  https://kvdb.io/${KVDB_BUCKET}/migration_<< parameters.Workflow_id >>)
-            if (( $SUCCESS == 1 )); then
-              cd ~/project/backend
-              npm install
-              npm run build
-              npm run migrations:revert
-              fi
+  # revert-migrations:
+  #   description: Revert the last migration, if any were executed during the current workflow
+  #   parameters:
+  #     Workflow_id:
+  #       type: string
+  #       default: ${CIRCLE_WORKFLOW_ID:0:7}
+  #   steps:
+  #     - run:
+  #         name: Revert migrations
+  #         when: on_fail
+  #         command: |
+  #           SUCCESS=$(curl --insecure  https://kvdb.io/${KVDB_BUCKET}/migration_<< parameters.Workflow_id >>)
+  #           if (( $SUCCESS == 1 )); then
+  #             cd ~/project/backend
+  #             npm install
+  #             npm run build
+  #             npm run migrations:revert
+  #             fi
             
  #Job stage is to build the following jobs on circleci          
 jobs:
@@ -270,7 +270,7 @@ jobs:
             fi  
      # rolls back; should migration fail
       - destroy-environment
-      - revert-migrations          
+      # - revert-migrations          
 
 
 #To Deploy Frontend used
