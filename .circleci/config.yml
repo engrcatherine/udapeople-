@@ -245,7 +245,7 @@ jobs:
 # To run npm migration then migeration result will be sent to kvdb.io
   run-migrations:
     docker:
-      - image: cimg/python:3.10   #image used
+      - image: cimg/python:3.10   #Executor
     steps:
       - checkout
       - install_awscli
