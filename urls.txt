@@ -9,7 +9,7 @@ URL03
 https://dyo507a5s4mqa.cloudfront.net
 
 URL04
-http://54.221.90.165:3030/api/status
+http://3.83.250.42:3030/api/status
 
 URL05
 http://3.85.173.16:9090/targets
