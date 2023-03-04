@@ -38,6 +38,13 @@ ADD SSH KEY to get Fingerprint in CircleCI
 	18:eb:a3:69:ee:58:5b:83:08:c8:77:b2:9d:ad:f3:25
 
 
+Hammed
+https://github.com/m-ahmedy/CDOEND-Project-Guides/blob/master/Project-3/instructions/17-monitoring-and-alerting.md
+
+codewizardly.com (prometheus)
+https://codewizardly.com/prometheus-on-aws-ec2-part1/
+
+
 
 
 
