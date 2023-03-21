@@ -185,7 +185,7 @@ jobs:
 #Create s3 buckets for frontend, Ec2 for backend and list ip address
   deploy-infrastructure:
     docker:
-      - image: cimg/python:3.10   #Executor
+      - image: cimg/python:3.10   #image used
     steps:
       - checkout
       - install_awscli
@@ -245,7 +245,7 @@ jobs:
 # To run npm migration then migeration result will be sent to kvdb.io
   run-migrations:
     docker:
-      - image: cimg/python:3.10   #image used
+      - image: cimg/python:3.10   #Executor
     steps:
       - checkout
       - install_awscli
@@ -450,67 +450,23 @@ jobs:
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
             fi
             
-# =====================================================================================
-  configure-node-exporter:
-    docker:
-      - image: cimg/python:3.10     #image used  
-    steps:
-      - checkout
-      - install_ansible
-      - install_awscli
-      - add_ssh_keys:
-          fingerprints: ["18:eb:a3:69:ee:58:5b:83:08:c8:77:b2:9d:ad:f3:25"]
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: Configure node_exporter
-          command: |
-            cd .circleci/ansible
-            cat inventory.txt
-            ansible-playbook configure-prometheus-node-exporter.yml -i inventory.txt
-
-  deploy-prometheus-server:
-    docker:
-      - image: cimg/python:3.10         #image used
-    steps:
-      - checkout
-      - install_ansible
-      - install_awscli
-      - add_ssh_keys:
-          fingerprints: ["18:eb:a3:69:ee:58:5b:83:08:c8:77:b2:9d:ad:f3:25"]
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       yum update -y
-      #       yum install -y  tar gzip
-      #       curl -sL https://rpm.nodesource.com/setup_13.x | bash -
-      #       yum install -y nodejs
-      #       amazon-linux-extras install -y epel
-      #       yum install -y ansible
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: Spin up EC2 server for prometheus
-          command: |
-            echo "[server]" >> .circleci/ansible/inventory.txt
-            aws cloudformation deploy \
-              --template-file .circleci/files/prometheus-server.yml \
-              --tags project=prometheus \
-              --stack-name udapeople-prometheus-${CIRCLE_WORKFLOW_ID:0:7} \
-              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}
-      - run:
-          name: Append IP to inventory file
-          command: |
-            aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters "Name=tag:project,Values=prometheus" \
-            --output text >> .circleci/ansible/inventory.txt
-      - run:
-          name: Install prometheus and alertmanager on server
-          command: |
-            cd .circleci/ansible
-            cat inventory.txt
-            ansible-playbook -i inventory.txt configure-prometheus-alertmanager.yml  
+  # configure-node-exporter:
+  #   docker:
+  #     - image: cimg/python:3.10     #image used  
+  #   steps:
+  #     - checkout
+  #     - install_ansible
+  #     - install_awscli
+  #     - add_ssh_keys:
+  #         fingerprints: ["18:eb:a3:69:ee:58:5b:83:08:c8:77:b2:9d:ad:f3:25"]
+  #     - attach_workspace:
+  #         at: ~/
+  #     - run:
+  #         name: Configure node_exporter
+  #         command: |
+  #           cd .circleci/ansible
+  #           cat inventory.txt
+  #           ansible-playbook configure-prometheus-node-exporter.yml -i inventory.txt
 
 
 #Workflows are listed below the above builds will not run without a workflow. List workflow and run jobs step by steps.            
@@ -550,3 +506,26 @@ workflows:
       #     requires: [smoke-test]
       # - deploy-prometheus-server:
       #     requires: [configure-node-exporter]
+=======
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]  #add env in circleci #ansible/files/be/fe
+          filters:
+            branches:
+              only: [main]            
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]      #ansible/roles/cofig-server/main.yml
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
+      # - configure-node-exporter:
+      #     requires: [smoke-test]
+
